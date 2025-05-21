@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\Post;
+use App\Http\Requests\StorePostRequest;
 
 class PostController extends Controller
 {
@@ -18,10 +20,20 @@ class PostController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StorePostRequest $request)
     {
-        //
+        $post = $request->user()->posts()->create([
+            'title' => $request->title,
+            'content' => $request->content,
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'data' => $post,
+            'message' => 'Post creado con éxito'
+        ]);
     }
+
 
     /**
      * Display the specified resource.
