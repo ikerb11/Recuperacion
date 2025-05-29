@@ -7,15 +7,23 @@ use App\Models\User;
 
 class UserController extends Controller
 {
-    // GET /api/users/{id}
     public function show($id)
     {
         $user = User::with(['posts', 'profile'])->find($id);
 
         if (!$user) {
-            return response()->json(['message' => 'Usuario no encontrado'], 404);
+            return response()->json([
+                'success' => false,
+                'data' => null,
+                'message' => 'No se encontró el usuario'
+            ], 200);
         }
 
-        return response()->json($user);
+        return response()->json([
+            'success' => true,
+            'data' => $user,
+            'message' => 'Usuario encontrado'
+        ], 200);
+
     }
 }
